@@ -1,11 +1,18 @@
-
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flash_chat/screens/grades/fifth_grades.dart';
+import 'package:flash_chat/screens/grades/fourth_grades.dart';
+import 'package:flash_chat/screens/grades/seventh.dart';
+import 'package:flash_chat/screens/grades/sixth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
+import 'screens/bottom_navigation.dart';
+import 'screens/grades/first_grades.dart';
+import 'screens/grades/second_grades.dart';
+import 'screens/grades/third_grades.dart';
 
 void main() async {
   // await WidgetsFlutterBinding.ensureInitialized();
@@ -23,13 +30,21 @@ class FlashChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: WelcomeScreen(),
+      home: const WelcomeScreen(),
       initialRoute: WelcomeScreen.id,
       routes: {
-        WelcomeScreen.id: (context) => WelcomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        ChatScreen.id: (context) => ChatScreen(),
+        WelcomeScreen.id: (context) => const WelcomeScreen(),
+        LoginScreen.id: (context) => const LoginScreen(),
+        RegistrationScreen.id: (context) => const RegistrationScreen(),
+        ChatScreen.id: (context) => const ChatScreen(),
+        BottomNavigation.id: (context) => const BottomNavigation(),
+        FirstGrades.id: (context) => const FirstGrades(),
+        SecondGrades.id: (context) => const SecondGrades(),
+        ThirdGrades.id: (context) => const ThirdGrades(),
+        FourhGrades.id: (context) => const FourhGrades(),
+        FifthGrades.id: (context) => const FifthGrades(),
+        SixthGrades.id: (context) => const SixthGrades(),
+        SeventhGrades.id: (context) => const SeventhGrades(),
       },
     );
   }

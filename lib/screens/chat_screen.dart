@@ -26,7 +26,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void gerCurrentUser() async {
-    final user = await _auth.currentUser;
+    final user = _auth.currentUser;
     if (user != null) {
       loggedInUser = user;
       print(loggedInUser.email);
@@ -52,19 +52,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                setState(() {
-                  _auth.signOut();
-                  Navigator.pop(context);
-                });
-              }),
-        ],
-        title: const Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Чат обратной связи',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -86,20 +78,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      messageTextController.clear();
-                      _firestore.collection('messages').add({
-                        'text': messageText,
-                        'sender': loggedInUser.email,
-                        'timestamp': FieldValue.serverTimestamp(),
-                      });
-                    },
-                    child: const Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
-                    ),
-                  ),
+                  IconButton(
+                      onPressed: () {
+                        messageTextController.clear();
+                        _firestore.collection('messages').add({
+                          'text': messageText,
+                          'sender': loggedInUser.email,
+                          'timestamp': FieldValue.serverTimestamp(),
+                        });
+                      },
+                      icon: const Icon(Icons.send)),
                 ],
               ),
             ),

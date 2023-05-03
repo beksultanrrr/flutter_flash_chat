@@ -10,7 +10,6 @@ class RegistrationScreen extends StatefulWidget {
 
   const RegistrationScreen({Key? key}) : super(key: key);
   @override
-
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
@@ -26,16 +25,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: ModalProgressHUD(
         inAsyncCall: _saving,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Hero(
                 tag: "logo",
-                child: Container(
+                child: SizedBox(
                   height: 200.0,
-                  child: Image.asset('images/logo.png'),
+                  child: Image.network(
+                      "https://thumbs.dreamstime.com/b/hand-book-logo-illustration-art-background-43965136.jpg"),
                 ),
               ),
               const SizedBox(
@@ -48,7 +48,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   email = value;
                 },
                 decoration:
-                    kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                    kTextFieldDecoration.copyWith(hintText: "Введите логин"),
               ),
               const SizedBox(
                 height: 8.0,
@@ -59,15 +59,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(
-                    hintText: "Enter your password"),
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: "Введите пароль"),
               ),
               const SizedBox(
                 height: 24.0,
               ),
               RoundedButton(
                   buttonColor: kRegisterButtonColor,
-                  buttonTitle: "Register",
+                  buttonTitle: "Зарегистрироватьcя",
                   onPressed: () async {
                     setState(() {
                       _saving = true;
@@ -76,9 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       final newUser =
                           await _auth.createUserWithEmailAndPassword(
                               email: email, password: password);
-                      if (newUser != null) {
-                        Navigator.pushNamed(context, ChatScreen.id);
-                      }
+                      Navigator.pushNamed(context, ChatScreen.id);
                       _saving = false;
                     } catch (e) {
                       print(e);

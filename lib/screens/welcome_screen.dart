@@ -7,6 +7,8 @@ import 'package:flash_chat/components/buttons.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = "welcome_screen";
+
+  const WelcomeScreen({Key? key}) : super(key: key);
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -68,18 +70,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               children: <Widget>[
                 Hero(
                   tag: "logo",
-                  child: Container(
-                    child: Image.asset('images/logo.png'),
-                    height: 60, //animation.value * 100,
+                  child: SizedBox(
+                    height: 60,
+                    child: Image.network(
+                        "https://thumbs.dreamstime.com/b/hand-book-logo-illustration-art-background-43965136.jpg"), //animation.value * 100,
                   ),
                 ),
                 TypewriterAnimatedTextKit(
                   speed: const Duration(milliseconds: 500),
-                  text: ["Flash Chat"],
+                  text: const ["Библиотека"],
                   textStyle: const TextStyle(
-                      fontSize: 45.0,
+                      fontSize: 40.0,
                       fontWeight: FontWeight.w900,
-                      color: Colors.grey),
+                      color: Colors.blue),
                 ),
               ],
             ),
@@ -88,13 +91,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             RoundedButton(
                 buttonColor: kLogInButtonColor,
-                buttonTitle: "Log In",
+                buttonTitle: "Вход",
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.id);
                 }),
             RoundedButton(
                 buttonColor: kRegisterButtonColor,
-                buttonTitle: "Register",
+                buttonTitle: "Зарегистрироватьcя",
                 onPressed: () {
                   Navigator.pushNamed(context, RegistrationScreen.id);
                 })
