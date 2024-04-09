@@ -1,44 +1,27 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/core/constants/color_constants.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/components/buttons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  static const String id = "welcome_screen";
-
   const WelcomeScreen({Key? key}) : super(key: key);
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
+class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProviderStateMixin {
   late Animation animation;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-      //upperBound: 100,
-    );
 
     // animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);   Curves class animation
-
-    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
-        .animate(controller); //Tween class animation for Colors
-
-    controller.forward();
-    // controller.reverse(from: 1)
-
-    controller.addListener(() {
-      setState(() {});
-      // print(animation.value * 100);
-    });
 
     // animation.addStatusListener((status) {
     //   if (status == AnimationStatus.completed) {
@@ -50,10 +33,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     // });
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+ 
+
+  void toLoginScreen(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
+  void toRegistrationScreen(context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen()));
   }
 
   @override
@@ -70,19 +57,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               children: <Widget>[
                 Hero(
                   tag: "logo",
-                  child: SizedBox(
-                    height: 60,
-                    child: Image.network(
-                        "https://thumbs.dreamstime.com/b/hand-book-logo-illustration-art-background-43965136.jpg"), //animation.value * 100,
-                  ),
+                  child: CachedNetworkImage(width: 80.h, height: 100.h, imageUrl: "https://www.kaznu.kz/content/images/pages/25775.jpg"),
                 ),
                 TypewriterAnimatedTextKit(
                   speed: const Duration(milliseconds: 500),
-                  text: const ["Библиотека"],
-                  textStyle: const TextStyle(
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.blue),
+                  text: const ["Мейрімділік"],
+                  textStyle: const TextStyle(fontSize: 40.0, fontWeight: FontWeight.w900, color: AppColors.primary),
                 ),
               ],
             ),
@@ -93,13 +73,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 buttonColor: kLogInButtonColor,
                 buttonTitle: "Вход",
                 onPressed: () {
-                  Navigator.pushNamed(context, LoginScreen.id);
+                  toLoginScreen(context);
                 }),
             RoundedButton(
                 buttonColor: kRegisterButtonColor,
                 buttonTitle: "Зарегистрироватьcя",
                 onPressed: () {
-                  Navigator.pushNamed(context, RegistrationScreen.id);
+                  toRegistrationScreen(context);
                 })
           ],
         ),

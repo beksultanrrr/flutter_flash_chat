@@ -1,18 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flash_chat/screens/grades/fifth_grades.dart';
-import 'package:flash_chat/screens/grades/fourth_grades.dart';
-import 'package:flash_chat/screens/grades/seventh.dart';
-import 'package:flash_chat/screens/grades/sixth.dart';
+import 'package:flash_chat/core/constants/app_theme.dart';
+import 'package:flash_chat/model/locale.dart';
+import 'package:flash_chat/screens/splash_screen/splash_screen.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/screens/welcome_screen.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
-import 'screens/bottom_navigation.dart';
-import 'screens/grades/first_grades.dart';
-import 'screens/grades/second_grades.dart';
-import 'screens/grades/third_grades.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() async {
   // await WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +21,9 @@ void main() async {
   // print(await messaging.getToken());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final String languageCode = prefs.getString('ru') ?? '';
   runApp(const FlashChat());
 }
 
@@ -29,23 +32,20 @@ class FlashChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const WelcomeScreen(),
-      initialRoute: WelcomeScreen.id,
-      routes: {
-        WelcomeScreen.id: (context) => const WelcomeScreen(),
-        LoginScreen.id: (context) => const LoginScreen(),
-        RegistrationScreen.id: (context) => const RegistrationScreen(),
-        ChatScreen.id: (context) => const ChatScreen(),
-        BottomNavigation.id: (context) => const BottomNavigation(),
-        FirstGrades.id: (context) => const FirstGrades(),
-        SecondGrades.id: (context) => const SecondGrades(),
-        ThirdGrades.id: (context) => const ThirdGrades(),
-        FourhGrades.id: (context) => const FourhGrades(),
-        FifthGrades.id: (context) => const FifthGrades(),
-        SixthGrades.id: (context) => const SixthGrades(),
-        SeventhGrades.id: (context) => const SeventhGrades(),
-      },
-    );
+    ScreenUtil.init(context);
+    return ChangeNotifierProvider(
+        create: (context) => LocaleModel(),
+        child: Consumer<LocaleModel>(
+          builder: (context, localeModel, child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.theme,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: localeModel.locale,
+              home: const SplashScreen(),
+            );
+          },
+        ));
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flash_chat/core/constants/app_text_styles.dart';
+import 'package:flash_chat/core/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,12 +54,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Чат обратной связи',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.primary,
+          title: Text(
+            "Задавайте вопросы",
+            style: AppTextStyles.s18w700montserrat.copyWith(color: Colors.white),
+          )),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,13 +106,12 @@ class StreamBuilderClass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream:
-            _firestore.collection('messages').orderBy('timestamp').snapshots(),
+        stream: _firestore.collection('messages').orderBy('timestamp').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
                 child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: AppColors.primary,
             ));
           }
           final messages = snapshot.data!.docs.reversed;
@@ -122,18 +123,11 @@ class StreamBuilderClass extends StatelessWidget {
             final messageSender = messageData['sender'];
             final currentUser = loggedInUser.email;
             final currentTime = messageData['timestamp'];
-            final date = currentTime != null
-                ? DateTime.fromMillisecondsSinceEpoch(
-                    currentTime.millisecondsSinceEpoch)
-                : DateTime.now();
+            final date = currentTime != null ? DateTime.fromMillisecondsSinceEpoch(currentTime.millisecondsSinceEpoch) : DateTime.now();
             final messageTimeSend = '${date.hour}:${date.minute}';
             print("sdsdsdsd $messageSender");
             print('XXXXXXXXXXXXX $messageText');
-            final messageWidget = MessageBubble(
-                sender: messageSender,
-                text: messageText,
-                sendTime: messageTimeSend,
-                isMe: currentUser == messageSender ? true : false);
+            final messageWidget = MessageBubble(sender: messageSender, text: messageText, sendTime: messageTimeSend, isMe: currentUser == messageSender ? true : false);
             messagBubles.add(messageWidget);
           }
           return Expanded(
